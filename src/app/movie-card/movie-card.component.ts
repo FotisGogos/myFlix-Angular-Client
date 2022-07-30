@@ -19,8 +19,11 @@ import { MovieGenreComponent } from '../movie-genre/movie-genre.component';
 export class MovieCardComponent {
   movies: any[] = [];
   favorites: any[] = [];
-  
-
+  /**
+   * @param fetchApiData 
+   * @param dialog 
+   * @param snackBar 
+   */
   constructor(
     public fetchApiData: FetchApiDataService,
     public dialog: MatDialog,
@@ -31,7 +34,10 @@ ngOnInit(): void {
   this.getMovies();
   
 }
-
+/**
+ * Loads movies from API
+ * @returns an arrray of movies
+ */
 getMovies(): void {
   this.fetchApiData.getAllMovies().subscribe((resp: any) => {
       this.movies = resp;
@@ -39,6 +45,12 @@ getMovies(): void {
       return this.movies;
     });
   }
+
+  /**
+   * 
+   * @param id  of movies 
+   * @returns list of favorite movies
+   */
   onToggleFavoriteMovie(id: string): any {
     if (this.isFav(id)) {
       this.fetchApiData.removeFavoriteMovie(id).subscribe((resp: any) => {
@@ -58,10 +70,20 @@ getMovies(): void {
     return this.favorites.push(id);
   }
 
+  /**
+   * 
+   * @param id of movies
+   * @returns favorite movies with the id of each movie
+   */
+
   isFav(id: string): boolean {
     return this.favorites.includes(id)
   }
-
+/**
+ * 
+ * @param name of movie genre 
+ * @param description of movie genre 
+ */
   openGenreDialog(name: string, description: string): void {
     this.dialog.open(MovieGenreComponent, {
       data: {
@@ -70,7 +92,11 @@ getMovies(): void {
         },
     });
   }
-
+/**
+ * 
+ * @param name of director
+ * @param bio of director
+ */
   openDirectorDialog(name: string, bio: string): void {
     this.dialog.open(MovieDirectorComponent, {
       data: { name, bio },

@@ -18,34 +18,47 @@ export class UserProfileComponent implements OnInit {
   user: any = {};
   movies: any = [];
   favorites: any = [];
-  
-
+/**
+ * @param fetchApiData 
+ * @param dialog 
+ * @param router 
+ * @param snackBar 
+ */
   constructor(
     public fetchApiData: FetchApiDataService,
     public dialog: MatDialog,
     public router: Router,
     public snackBar: MatSnackBar
   ) { }
+  
+  /**
+   * Initialize the component loading the data
+   * @function ngOnInit
+   */
 
   ngOnInit(): void {
     this.getUser();
   }
 
   getUser(): void {
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem('username');
     this.fetchApiData.getUser(user).subscribe((resp: any) => {
       this.user = resp;
       console.log(this.user);
       return this.user;
     })
   }
-
+/**
+ * Opens edit profile dialog.User now can edit his profile 
+ */
   openEditProfileDialog(): void {
     this.dialog.open(UserProfileEditComponent, {
       width: '300px'
     })
   }
-
+/**
+ *  user can delete his profile
+ */
   deleteProfile(): void {
     if (confirm('Do you really want to delete this account?')) {
       this.router.navigate(['welcome']).then(() => {
